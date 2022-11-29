@@ -1,0 +1,443 @@
+#+title: TestNet
+#+author: Vinicius Valente Maciel
+#+EMAIL:  vmaciel@nox.trading
+#+DESCRIPTION: API Gateway testing
+#+KEYWORDS:  gateway,API,test
+#+LANGUAGE:  en
+#+latex_class: article
+#+latex_class_options: [a4paper,10pt,final]
+#+LATEX_HEADER: \usepackage{subcaption}
+
+#+LATEX_HEADER: \usepackage[table]{xcolor}
+#+LATEX_HEADER: \usepackage[margin=0.9in,bmargin=1.0in,tmargin=1.0in]{geometry}
+#+LATEX_HEADER: \usepackage{amsmath}
+#+LATEX_HEADER: \usepackage{bookman}
+#+LaTeX_HEADER: \newcommand{\point}[1]{\noindent \textbf{#1}}
+#+LaTeX_HEADER: \usepackage{hyperref}
+#+LaTeX_HEADER: \parindent = 0em
+#+LaTeX_HEADER: \setlength\parskip{.5\baselineskip}
+#+LaTeX_HEADER: \usepackage[latin1]{inputenc}
+#+OPTIONS:   H:3 num:t \n:nil @:t ::t |:t ^:t -:t f:t *:t <:t ^:nil _:nil
+#+OPTIONS:   H:3 num:3
+#+STARTUP:   showall
+#+STARTUP:   align
+#+LaTeX_HEADER: \usepackage[latin1]{inputenc}
+
+* Introduction
+
+The aim of this document is show how a developer can use the Nox gateway api in testnet. To use this system you must generate an API key and have an merchant registration.
+*This document is targeted towards Nox QA group*.  
+
+
+* Getting an APIKEY and a merchant registration
+
+To get an APIKEY and a merchant resgistration, you must get in contact with Nox, so we can provide them to you.
+
+* Setting the URL
+
+In the testing scripts, to set the URL that will be used, you must run the config.sh file. All other .sh files available already run this script.
+
+#+caption: config.sh content
+#+begin_src bash :results raw
+export URL=https://testnetapigateway.herokuapp.com
+#+end_src
+
+* Checking APIKEY
+
+To check your APIKEY, you must run the test-auth.sh file. If the .sh runs properly, the return will be your data.
+*This endpoint onlys works in the testnet*.
+
+#+begin_src bash :results raw
+source config.sh
+curl --header 'api-key: 12345678'  ${URL}/test-auth
+echo
+#+end_src
+
+Example of the output:
+#+begin_example
+{"ID":1,"MerchantID":1,"Name":"NoxTrading","Hash":"-",
+ "CreatedAt":"2022-08-23T16:48:37Z"}
+#+end_example
+ 
+*  Getting account data
+
+To get your account's data, you must run the getAccount.sh file. If the .sh runs properly, the return will be the merchant's name and balance. You must have your APIKEY to run this script.
+
+#+begin_src bash :results raw
+source config.sh
+custid=`uuid`
+curl --header 'api-key: 12345678' ${URL}/api/account
+echo
+#+end_src
+
+Example of the output:
+#+begin_example
+{"name":"NoxTrading","balance":150100}
+#+end_example
+
+
+* Customer section
+
+** Creating a new customer
+
+To create a new customer, you must run the createCustomer.sh file. If the .sh runs properly, a new customer will be created.
+The .sh also returns the new customer's data. To run this script, you must have your APIKEY.
+
+#+begin_src bash :results raw
+	source config.sh
+	custid=`uuid`
+	curl --header 'api-key: 12345678' -d \
+	     "{\"name\": \"Usuario-${custid}\", \
+	     \"document\": \"${custid}\", \
+	     \"document_type\":\"CPF\"}" \
+	     ${URL}/api/customer
+#+end_src
+
+Example of the output:
+#+begin_example
+{"name":"Usuario-30fbffe8-f7f5-491d-a194-92abc2d05e37","email":"",
+ "code":"87d51057-cdfe-40f5-a48b-0fd4a3f62f50",
+ "document":"30fbffe8-f7f5-491d-a194-92abc2d05e37",
+ "document_type":"CPF","phone":"","birthday":"0001-01-01T00:00:00Z",
+ "metadata":"","createdat":"0001-01-01T00:00:00Z"}
+#+end_example
+
+** Getting customer data
+
+To get the customer's data, you must run the getCostumer.sh file. If the .sh runs properly, the return will be the customer's data.
+To receive this data you must have the customer's document and/or code, as well as your APIKEY.
+
+#+begin_src bash :results raw
+	source config.sh
+	custid=`uuid`
+	echo "Creating customer"
+	curl --header 'api-key: 12345678' -d \
+	     "{\"name\": \"Usuario-${custid}\", \
+	     \"document_type\": \"UUID\", \
+	     \"document\": \"${custid}\"}" \
+	     ${URL}/api/customer
+	echo
+	sleep 1
+	echo
+	echo "Get Customer"
+	curl --header 'api-key: 12345678' ${URL}/api/customer/${custid}
+	echo
+#+end_src
+
+Example of the output:
+#+begin_example
+Creating customer
+{"name":"Usuario-2a5659e7-fc40-4db0-8da8-b43731e6de08",
+ "email":"","code":"61b394f0-7f8e-414c-92a1-0c74e58c6279",
+ "document":"2a5659e7-fc40-4db0-8da8-b43731e6de08",
+ "document_type":"UUID","phone":"",
+ "birthday":"0001-01-01T00:00:00Z","metadata":"",
+ "createdat":"0001-01-01T00:00:00Z"}
+
+Get Customer
+{"name":"Usuario-2a5659e7-fc40-4db0-8da8-b43731e6de08",
+ "email":"","code":"61b394f0-7f8e-414c-92a1-0c74e58c6279",
+ "document":"2a5659e7-fc40-4db0-8da8-b43731e6de08","document_type":"UUID",
+ "phone":"","birthday":"0001-01-01T00:00:00Z",
+ "metadata":"","createdat":"2022-08-25T00:37:41.801244Z"}
+#+end_example
+
+* Payments
+
+** Creating a new payment - CASH IN
+
+To create a new payment, you must run the createPayment.sh file. If the .sh runs properly, a new payment will be created. The .sh also returns the payments's data.
+
+#+begin_src bash :results raw
+  source config.sh
+  custid=`uuid`
+
+  echo "Creating customer"
+  curl --header 'api-key: 12345678' -d \
+       "{\"name\": \"Usuario-${custid}\", \
+       \"document_type\": \"CPF\", \
+       \"document\": \"${custid}\"}" \
+       ${URL}/api/customer
+  echo
+
+  echo
+  echo "Get Customer"
+  curl --header 'api-key: 12345678' ${URL}/api/customer/${custid} 
+  echo
+
+  echo "Creating payment"
+  payment="
+  {
+      \"method\": \"PIX\",
+      \"code\": \"123333\",
+      \"customer_doc\": \"${custid}\",
+      \"items\": [
+      {
+	  \"description\": \"BTC\",
+	  \"amount\": 150000.0,
+	  \"quantity\": 1.02,
+	  \"code\":\"cBTC\"
+      },
+      {
+	  \"description\": \"ADA\",
+	  \"amount\": 100.0,
+	  \"quantity\": 10000.02,
+	  \"code\":\"cADA\"
+      }
+      ]
+  }
+  "
+  echo ${payment} | curl --header 'api-key: 12345678' \
+    ${URL}/api/payment -d @-
+  echo
+#+end_src
+
+Example of the output:
+#+begin_example
+Creating customer
+{"name":"Usuario-c9065e10-e0e3-4994-baa1-bd2ce53c6926","email":"",
+ "code":"84ea17eb-8a9b-4b49-97e4-a038e428e2f5",
+ "document":"c9065e10-e0e3-4994-baa1-bd2ce53c6926",
+ "document_type":"CPF","phone":"","birthday":"0001-01-01T00:00:00Z",
+ "metadata":"","createdat":"0001-01-01T00:00:00Z"}
+
+Get Customer
+{"name":"Usuario-c9065e10-e0e3-4994-baa1-bd2ce53c6926","email":"",
+ "code":"84ea17eb-8a9b-4b49-97e4-a038e428e2f5",
+ "document":"c9065e10-e0e3-4994-baa1-bd2ce53c6926",
+ "document_type":"CPF","phone":"",
+ "birthday":"0001-01-01T00:00:00Z","metadata":"",
+ "createdat":"2022-08-25T00:40:18.53872Z"}
+Creating payment
+{"method":"PIX","code":"123333",
+ "customer_doc":"c9065e10-e0e3-4994-baa1-bd2ce53c6926",
+ "items":[{"Description":"BTC","Amount":150000,
+           "Quantity":1.02,"Code":"cBTC","Category":""},
+	  {"Description":"ADA","Amount":100,
+	   "Quantity":10000.02,"Code":"cADA",
+	   "Category":""}],
+ "QRCode":"https://noxbitcoin.com.br/logo-nox.svg",
+ "txid":"7132668f-9916-4bc9-9c50-89af03169e1f","Status":"WAITING_PAYMENT"}
+#+end_example
+ 
+* Get Payment's info
+
+To get the payment's data info you must use the /${URL}/api/payment/{txid}/, where *txid* is returned from the payment creation.
+
+To simulate a payment, you must use the /${URL}/api/payment/pay/${txid}/. This feature only works in the testnet instance of the system. 
+
+#+begin_src bash :results raw
+source config.sh
+custid=`uuid`
+
+echo "Creating customer"
+curl --header 'api-key: 12345678' -d \
+  "{\"name\": \"Usuario-${custid}\", \
+  \"document_type\": \"UUID\", \
+  \"document\": \"${custid}\"}" \
+  ${URL}/api/customer
+echo
+
+echo
+echo "Get Customer"
+curl --header 'api-key: 12345678' ${URL}/api/customer/${custid} 
+echo
+
+echo "Creating payment"
+payment="
+{
+    \"method\": \"PIX\",
+    \"code\": \"123333\",
+    \"customer_doc\": \"${custid}\",
+    \"items\": [
+    {
+        \"description\": \"BTC\",
+        \"amount\": 150000.0,
+        \"quantity\": 1.02,
+        \"code\":\"cBTC\"
+    },
+    {
+        \"description\": \"ADA\",
+        \"amount\": 100.0,
+        \"quantity\": 10000.02,
+        \"code\":\"cADA\"
+    }
+    ]
+}
+"
+txid=`echo ${payment} | curl -s --header 'api-key: 12345678' \
+   ${URL}/api/payment -d @- | jq -r .txid`
+echo ${txid}
+
+curl --header 'api-key: 12345678' ${URL}/api/account
+echo
+curl -s --header 'api-key: 12345678' \
+   ${URL}/api/payment/${txid}
+echo
+curl -s --header 'api-key: 12345678' \
+   ${URL}/api/payment/pay/${txid}
+echo
+curl -s --header 'api-key: 12345678' \
+   ${URL}/api/payment/${txid}
+echo
+curl --header 'api-key: 12345678' \
+   ${URL}/api/account
+echo
+#+end_src
+
+Example of the output:
+#+begin_example
+Creating customer
+{"name":"Usuario-dd722fd9-5ed6-4fd0-9c10-ba14b3585b14",
+ "email":"","code":"fc66a736-0bab-4028-81ed-111ddec007b7",
+ "document":"dd722fd9-5ed6-4fd0-9c10-ba14b3585b14",
+ "document_type":"UUID","phone":"",
+ "birthday":"0001-01-01T00:00:00Z",
+ "metadata":"","createdat":"0001-01-01T00:00:00Z"}
+
+Get Customer
+{"name":"Usuario-dd722fd9-5ed6-4fd0-9c10-ba14b3585b14",
+ "email":"","code":"fc66a736-0bab-4028-81ed-111ddec007b7",
+ "document":"dd722fd9-5ed6-4fd0-9c10-ba14b3585b14",
+ "document_type":"UUID","phone":"",
+ "birthday":"0001-01-01T00:00:00Z","metadata":"",
+ "createdat":"2022-08-25T00:42:10.514883Z"}
+Creating payment
+789c7d41-1cab-4410-9699-79979e4ece91
+{"name":"NoxTrading","balance":150100}
+{"Method":"PIX","Status":"WAITING_PAYMENT",
+ "Code":"123333","TxID":"789c7d41-1cab-4410-9699-79979e4ece91",
+ "Amount":150100}
+{"Method":"PIX","Status":"PAY",
+ "Code":"123333","TxID":"789c7d41-1cab-4410-9699-79979e4ece91",
+ "Amount":150100}
+{"Method":"PIX","Status":"PAY",
+ "Code":"123333","TxID":"789c7d41-1cab-4410-9699-79979e4ece91",
+ "Amount":150100}
+{"name":"NoxTrading","balance":300200}
+#+end_example
+  
+** Creating a new payment - CASH OUT
+
+To create a new cash out payment, you must run the code. If the it runs properly, a new payment cash out will be created.
+The return is the payments's data. 
+
+#+begin_src bash :results raw
+  source config.sh
+  custid=`uuid`
+
+  echo "========> Creating customer"
+  curl --header 'api-key: 12345678' -d "{\"name\": \"Usuario-${custid}\", \
+      \"document_type\": \"UUID\", \"document\": \"${custid}\"}" ${URL}/api/customer
+  echo
+
+  echo
+  echo "Get User"
+  curl --header 'api-key: 12345678' ${URL}/api/customer/${custid} 
+  echo
+
+  echo "========> Creating payment"
+  payment="
+  {
+      \"method\": \"PIX\",
+      \"code\": \"123333\",
+      \"customer_doc\": \"${custid}\",
+      \"items\": [
+      {
+	  \"description\": \"BTC\",
+	  \"amount\": 100.0,
+	  \"quantity\": 1.02,
+	  \"code\":\"cBTC\"
+      },
+      {
+	  \"description\": \"ADA\",
+	  \"amount\": 200.0,
+	  \"quantity\": 10000.02,
+	  \"code\":\"cADA\"
+      }
+      ]
+  }
+  "
+
+  txid=`echo ${payment} | curl -s --header 'api-key: 12345678' \
+     ${URL}/api/payment -d @- | jq -r .txid`
+  echo ${txid}
+
+  curl --header 'api-key: 12345678' ${URL}/api/account
+  echo
+  curl -s --header 'api-key: 12345678' ${URL}/api/payment/${txid}
+  echo "========> Recebendo"
+  curl -s --header 'api-key: 12345678' ${URL}/api/payment/pay/${txid}
+  echo
+  curl --header 'api-key: 12345678' ${URL}/api/account
+  echo
+
+  echo "========> Creating payment out"
+  paymentout="
+  {
+      \"method\": \"PIXOUT\",
+      \"code\": \"123\",
+      \"customer_doc\": \"${custid}\",
+      \"items\": [
+      {
+	  \"description\": \"Reward\",
+	  \"amount\": 250.0,
+	  \"quantity\": 1,
+	  \"code\":\"RWD1\"
+      }
+      ]
+  }
+  "
+
+  txoutid=`echo ${paymentout} | curl -s --header 'api-key: 12345678' \
+   ${URL}/api/payment -d @- | jq -r .txid`
+  echo ${txoutid}
+
+  curl --header 'api-key: 12345678' ${URL}/api/account
+  echo
+  curl -s --header 'api-key: 12345678' ${URL}/api/payment/${txoutid}
+  echo "========> Pagando"
+  curl -s --header 'api-key: 12345678' ${URL}/api/payment/pay/${txoutid}
+  echo
+  curl --header 'api-key: 12345678' ${URL}/api/account
+  echo
+#+end_src
+
+Example of the output:
+#+begin_example
+========> Creating customer
+{"name":"Usuario-ceb55928-0965-47a6-8a1c-258ead4a902c","email":"",
+ "code":"2c84ea64-d692-4f71-9656-2f7eeab18f23","document":
+ "ceb55928-0965-47a6-8a1c-258ead4a902c","document_type":"UUID",
+ "phone":"","birthday":"0001-01-01T00:00:00Z","metadata":"",
+ "createdat":"0001-01-01T00:00:00Z"}
+
+Get User
+{"name":"Usuario-ceb55928-0965-47a6-8a1c-258ead4a902c","email":"",
+ "code":"2c84ea64-d692-4f71-9656-2f7eeab18f23",
+ "document":"ceb55928-0965-47a6-8a1c-258ead4a902c","document_type":"UUID",
+ "phone":"","birthday":"0001-01-01T00:00:00Z","metadata":"",
+ "createdat":"2022-08-31T20:47:46.330245Z"}
+
+========> Creating payment
+36903be6-8711-4f90-8af1-8360539931ea
+{"name":"NoxTrading","balance":0}
+{"Method":"PIX","Status":"WAITING_PAYMENT","Code":"123333",
+ "TxID":"36903be6-8711-4f90-8af1-8360539931ea","Amount":300}
+========> Recebendo
+{"Method":"PIX","Status":"PAY","Code":"123333",
+ "TxID":"36903be6-8711-4f90-8af1-8360539931ea","Amount":300}
+{"name":"NoxTrading","balance":300}
+
+========> Creating payment out
+2ed3f4d5-3365-47b6-bf24-83ee380a77c6
+{"name":"NoxTrading","balance":300}
+{"Method":"PIXOUT","Status":"WAITING_PAYMENT","Code":"123",
+ "TxID":"2ed3f4d5-3365-47b6-bf24-83ee380a77c6","Amount":250}
+========> Pagando
+{"Method":"PIXOUT","Status":"PAY","Code":"123",
+ "TxID":"2ed3f4d5-3365-47b6-bf24-83ee380a77c6","Amount":250}
+{"name":"NoxTrading","balance":50}
+#+end_example
+
+
