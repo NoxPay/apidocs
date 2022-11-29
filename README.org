@@ -1,4 +1,4 @@
-#+title: TestNet
+#+title: API Docs
 #+author: Vinicius Valente Maciel
 #+EMAIL:  vmaciel@nox.trading
 #+DESCRIPTION: API Gateway testing
@@ -25,9 +25,8 @@
 
 * Introduction
 
-The aim of this document is show how a developer can use the Nox gateway api in testnet. To use this system you must generate an API key and have an merchant registration.
+The aim of this document is show how a developer can use the Nox gateway api in testnet. To use this system you must generate an API key and have an merchant registration. To access the main NoxPay API contact our team.
 *This document is targeted towards Nox QA group*.  
-
 
 * Getting an APIKEY and a merchant registration
 
