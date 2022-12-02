@@ -103,7 +103,7 @@ Example of the output:
 
 ** Getting customer data
 
-To get the customer's data, you must run the getCostumer.sh file. If the .sh runs properly, the return will be the customer's data.
+To get the customer's data, you should run the getCostumer.sh file. If the .sh runs properly, the return will be the customer's data.
 To receive this data you must have the customer's document and/or code, as well as your APIKEY.
 
 #+begin_src bash :results raw
