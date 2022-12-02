@@ -480,9 +480,9 @@ The request will be something like this
 *** Open PIX example
 
 #+begin_src json
-{'end2end_id': 'E31872495202212012125Yu7PIMArtyx', 'merchant': 27, 'value': 800.0, 
- 'payer_document': '99999999999', 'payer_name': 'John Doe', 'payer_account_type': 'CONTA_CORRENTE', 
- 'payer_account': '9999999', 'payer_account_digit': '9', 'payer_agency': '1', 'payer_bank_name': 'Doe's Bank', 
- 'payer_bank_code': '999', 'payer_bank_ispb': '99999999'}
+{"end2end_id": "E31872495202212012125Yu7PIMArtyx", "merchant": 27, "value": 800.0, 
+ "payer_document": "99999999999", "payer_name": "John Doe", "payer_account_type": "CONTA_CORRENTE", 
+ "payer_account": "9999999", "payer_account_digit": "9", "payer_agency": "1", "payer_bank_name": "Doe's Bank", 
+ "payer_bank_code": "999", "payer_bank_ispb": "99999999"}
 #+end_src
 
