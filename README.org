@@ -38,7 +38,11 @@ In the testing scripts, to set the URL that will be used, you must run the confi
 
 #+caption: config.sh content
 #+begin_src bash :results raw
-export URL=https://testnetapigateway.herokuapp.com
+# sandbox
+export URL=https://testnetapigateway.herokuapp.com 
+
+# real environment
+#export URL=https://api.noxpay.io
 #+end_src
 
 * Checking APIKEY
