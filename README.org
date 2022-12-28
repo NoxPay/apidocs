@@ -451,6 +451,7 @@ Your system can register two webhooks, one for the open PIX and one for the paym
 - An open PIX does not have a pre-registered payment order in the NoxPay gateway. They are customarily used to allow the client to define the deposit value.
 - The payment PIX has the payment order pre-registered in the NoxPay gateway.
 - All webhooks requests are signed.
+- Webhooks can be resended using the route: /${URL}/api/payment/webhook/resend/{txid}
 
 ** How requests are signed
 
