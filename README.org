@@ -145,6 +145,37 @@ Get Customer
  "metadata":"","createdat":"2022-08-25T00:37:41.801244Z"}
 #+end_example
 
+** Updating customer data
+
+The only field that can be updated is the customer's name. To update the customer's pix key.
+
+#+begin_src bash :results raw
+	source config.sh
+  #!/bin/bash
+
+  source config.sh
+  echo URL: ${URL}
+  custid=`uuid`
+
+  echo "========> Creating customer"
+  curl --header 'api-key: 12345678' -d "{\"name\": \"Usuario-${custid}\", \"document_type\": \"UUID\", \"document\": \"${custid}\"}" ${URL}/api/customer
+  echo
+
+  echo
+  echo "Get User"
+  curl --header 'api-key: 12345678' ${URL}/api/customer/${custid} 
+  echo
+
+  echo "========> update customer"
+  curl -X PUT --header 'api-key: 12345678' -d "{\"pixkey\": \"pixkey-123-123 \"}" ${URL}/api/customer/${custid}
+  echo
+
+  echo
+  echo "Get User"
+  curl --header 'api-key: 12345678' ${URL}/api/customer/${custid} 
+  echo
+#+end_src
+
 * Payments
 
 ** Creating a new payment - CASH IN
@@ -442,6 +473,53 @@ Get User
  "TxID":"2ed3f4d5-3365-47b6-bf24-83ee380a77c6","Amount":250}
 {"name":"NoxTrading","balance":50}
 #+end_example
+
+* Creating pix out
+
+To create a pix out, you need to create payment with method PIXOUT.
+You can use a existing customer or create a new one.
+
+#+begin_src bash :results raw
+  source PIXOut.sh
+  #!/bin/bash
+
+  source config.sh
+  echo URL: ${URL}
+  custid=`uuid`
+
+  echo "========> Creating customer"
+  curl --header 'api-key: 12345678' -d "{\"name\": \"Usuario-${custid}\", \"document_type\": \"UUID\", \"document\": \"${custid}\"}" ${URL}/api/customer
+  echo
+
+  echo
+  echo "Get User"
+  curl --header 'api-key: 12345678' ${URL}/api/customer/${custid} 
+  echo
+
+  echo "========> Creating payment out"
+  paymentout="
+  {
+      \"method\": \"PIXOUT\",
+      \"code\": \"123\",
+      \"customer_doc\": \"${custid}\",
+      \"items\": [
+      {
+          \"description\": \"Reward\",
+          \"amount\": 250.0,
+          \"quantity\": 1,
+          \"code\":\"RWD1\"
+      }
+      ]
+  }
+  "
+
+  txoutid=`echo ${paymentout} | curl -s --header 'api-key: 12345678' ${URL}/api/payment -d @- | jq -r .txid`
+  echo ${txoutid}
+
+  curl --header 'api-key: 12345678' ${URL}/api/account
+  echo
+  curl -s --header 'api-key: 12345678' ${URL}/api/payment/${txoutid}
+#+end_src
 
 * WebHooks
 
