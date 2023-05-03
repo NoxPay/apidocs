@@ -1,5 +1,5 @@
 #+title: API V2
-#+author: Vinicius Valente Maciel, Cesar Gimenes
+#+author: Vinicius Valente Maciel, Cesar Gimenes, Gabriel Rhama
 #+EMAIL:  vmaciel@nox.trading
 #+DESCRIPTION: API Gateway V2
 #+KEYWORDS:  gateway,API,test,v2
@@ -46,7 +46,7 @@ run this script.
 
 #+caption: config.sh content
 #+begin_src bash :results raw
-export URL=https://testnetapigateway.herokuapp.com
+export URL=https://api2.noxpay.io
 export APIKEY=<apikey> #substitua aqui sua apikey
 #+end_src
 
@@ -75,7 +75,7 @@ To get your account's data, you must run the getAccount.sh file. If the .sh runs
 #+begin_src bash :results raw
 source config.sh
 custid=`uuid`
-curl --header 'api-key: ${APIKEY}' ${URL}/api/account
+curl --header 'api-key: ${APIKEY}' ${URL}/account
 echo
 #+end_src
 
@@ -106,7 +106,7 @@ The .sh also returns the payments's data.
   echo ${payment} | curl \
      --header 'Content-Type: application/json' \
      --header 'api-key: ${APIKEY}' \
-    ${URL}/api/payment -d @-
+    ${URL}/payment -d @-
   echo
 #+end_src
 
@@ -126,11 +126,11 @@ Creating payment
 **** Get Payment's info
 
 To get the payment's data info you must use 
-the /${URL}/api/payment/{txid}/, where *txid* is 
+the /${URL}/payment/{txid}/, where *txid* is 
 returned from the payment creation.
 
 To simulate a payment, you must use 
-the /${URL}/api/payment/pay/${txid}/. 
+the /${URL}/payment/${txid}/. 
 This feature only works in the testnet instance of the system. 
 
 #+begin_src bash :results raw
@@ -150,19 +150,19 @@ txid=`echo ${payment} | curl -s \
    ${URL}/api/payment -d @- | jq -r .txid`
 echo ${txid}
 
-curl --header 'api-key: ${APIKEY}' ${URL}/api/account
+curl --header 'api-key: ${APIKEY}' ${URL}/account
 echo
 curl -s --header 'api-key: ${APIKEY}' \
-   ${URL}/api/payment/${txid}
+   ${URL}/api/${txid}
 echo
 curl -s --header 'api-key: ${APIKEY}' \
-   ${URL}/api/payment/pay/${txid}
+   ${URL}/payment/${txid}
 echo
 curl -s --header 'api-key: ${APIKEY}' \
-   ${URL}/api/payment/${txid}
+   ${URL}/payment/${txid}
 echo
 curl --header 'api-key: ${APIKEY}' \
-   ${URL}/api/account
+   ${URL}/account
 echo
 #+end_src
 
@@ -225,11 +225,11 @@ obrigatorio.
 
   curl --header 'api-key: 12345678' ${URL}/api/account
   echo
-  curl -s --header 'api-key: 12345678' ${URL}/api/payment/${txoutid}
+  curl -s --header 'api-key: 12345678' ${URL}/payment/${txoutid}
   echo "========> Pagando"
-  curl -s --header 'api-key: 12345678' ${URL}/api/payment/pay/${txoutid}
+  curl -s --header 'api-key: 12345678' ${URL}/payment/${txoutid}
   echo
-  curl --header 'api-key: 12345678' ${URL}/api/account
+  curl --header 'api-key: 12345678' ${URL}/account
   echo
 #+end_src
 
