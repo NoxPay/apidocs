@@ -201,9 +201,9 @@ obrigatorio.
   paymentout="
   {
       \"method\": \"PIXOUT\",
-      \"type\": \"PIXKEY\"  //or ACCOUNT
+      \"type\": \"PIX_KEY\"  //or ACCOUNT
       \"code\": \"123\",
-      \"pixkey\": \"key\": \"pixkey@example.com\",
+      \"pixkey\": \"pixkey@example.com\",
       \"bank_account\": {
           \"name\": \"Fulano de souza\",
           \"cpf_cnpj\": \"12863843893\",
