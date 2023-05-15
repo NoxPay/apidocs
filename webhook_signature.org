@@ -31,10 +31,10 @@ When NoxPay sends a call to a webhook, this call is signed so that the call dest
 
 The signature is sent in the header of the call, in the fields X-Signature and noxpay-sign.
 
-#+begin http
+#+begin_src http
 X-Signature: signature
 noxpay-sign: signature
-#+end http
+#+end_src http
 
 * How to validate the signature
 
