@@ -52,13 +52,13 @@ def validate_signature(plaintext, key, signature):
     return signature == expected_signature
 #+end_src
 
+Golang Example:
 #+begin_src golang
 import (
     "encoding/base64"
     "crypto/sha256"
 )
 
-Golang Example:
 func validateSignature(plaintext []byte, key string, signature string) bool {
     content := key + string(plaintext)
     bcontent := []byte(content)
