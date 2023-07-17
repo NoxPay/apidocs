@@ -127,7 +127,7 @@ Creating payment
 
 To get the payment's data info you must use 
 the /${URL}/payment/{code}or{txid}/, where *txid* is 
-returned from the payment creation.
+returned from the payment creation and *code* is your control about payments, you must need insert the code before to make a payment requisitions.
 
 To simulate a payment, you must use 
 the /${URL}/payment/${txid}/. 
