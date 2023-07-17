@@ -126,7 +126,7 @@ Creating payment
 **** Get Payment's info
 
 To get the payment's data info you must use 
-the /${URL}/payment/{txid}/, where *txid* is 
+the /${URL}/payment/{code}or{txid}/, where *txid* is 
 returned from the payment creation.
 
 To simulate a payment, you must use 
