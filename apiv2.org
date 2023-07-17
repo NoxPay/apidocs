@@ -201,7 +201,7 @@ obrigatorio.
   paymentout="
   {
       \"method\": \"PIXOUT\",
-      \"type\": \"PIX_KEY\"  //or ACCOUNT
+      \"type\": \"PIX_KEY\"  //or BANK_ACCOUNT
       \"code\": \"123\",
       \"pixkey\": \"pixkey@example.com\",
       \"bank_account\": {
