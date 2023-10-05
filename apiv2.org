@@ -255,7 +255,37 @@ To resend a webhook, you must run the code.
 
   echo "========> Request resend webhook"
   curl -s --header 'api-key: 12345678' ${URL}/payment/webhook/resend/${txid}
-#+end_example
+#+end_src
 
 
+*** Reports
 
+**** Transactions
+
+List the transactions using an filter. It's possible filter:
+- endDate - in RFC339 format;
+- beginDate - in RFC339 format;
+- status - WAITING_PAYMENT, PAID, SENDING, SENT, APROVED, NO_FUND, WRONG_PIXKEY, REJECTED, FAIL
+- method - PIX or PIXOUT
+
+#+begin_src bash :results raw
+source config.sh
+
+URLFULL="${URL}/report/transactions" 
+
+echo "Creating payment"
+payment="\
+{\
+    \"beginDate\": \"2023-09-10T00:00:00Z\",\
+    \"endDate\": \"2023-10-10T00:00:00Z\",\
+    \"method\": \"PIX\",\
+    \"status\": \"PAID\"
+}"
+
+echo "${payment}" | curl --header "api-key: 12345678" \
+    --header "Content-Type: application/json" \
+    "${URLFULL}" -d @-
+echo
+#+end_src
+
+The report generated is send to merchant email in csv format.
