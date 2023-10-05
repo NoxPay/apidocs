@@ -274,7 +274,7 @@ source config.sh
 URLFULL="${URL}/report/transactions" 
 
 echo "Creating payment"
-payment="\
+filter="\
 {\
     \"beginDate\": \"2023-09-10T00:00:00Z\",\
     \"endDate\": \"2023-10-10T00:00:00Z\",\
@@ -282,7 +282,7 @@ payment="\
     \"status\": \"PAID\"
 }"
 
-echo "${payment}" | curl --header "api-key: 12345678" \
+echo "${filter}" | curl --header "api-key: 12345678" \
     --header "Content-Type: application/json" \
     "${URLFULL}" -d @-
 echo
