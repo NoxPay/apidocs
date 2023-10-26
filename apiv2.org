@@ -115,12 +115,13 @@ Example of the output:
 Creating payment
 {"method":"PIX",
  "code":"123333", 
+ "type: "<pix type>",
  "amount": 1005.00,
- "qrcode":"https://noxbitcoin.com.br/logo-nox.svg?id=2893746",
- "qrcodebase64":"aaaaabbbbbbb==",
- "copypaste": "<string copy paste pagamento>",
+ "qrcode":"aaaaabbbbbbb==",
+ "qrcodetext": "<string copy paste pagamento>",
  "txid":"7132668f-9916-4bc9-9c50-89af03169e1f",
- "Status":"WAITING_PAYMENT"}
+ "Status":"WAITING_PAYMENT",
+ "URL":"https://api2.noxpay.io/qrcode/<txid>"}
 #+end_example
 
 **** Get Payment's info
@@ -257,6 +258,13 @@ To resend a webhook, you must run the code.
   curl -s --header 'api-key: 12345678' ${URL}/payment/webhook/resend/${txid}
 #+end_src
 
+*** Get QRCode
+
+Get QRCode PNG image from a payment txid.
+
+https://api2.noxpay.io/qrcode/<txid>
+
+Where txid is returned from the payment creation.
 
 *** Reports
 
