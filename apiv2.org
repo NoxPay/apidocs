@@ -53,9 +53,10 @@ export APIKEY=<apikey> #substitua aqui sua apikey
 ** Checking APIKEY
 
 To check your APIKEY, you must run the test-auth.sh file. If the .sh 
-runs properly, the return will be your data. *This endpoint onlys 
-works in the testnet*.
+runs properly, the return will be your data.
 
+#+NAME: test-auth.sh
+#+LABEL: test-auth.sh
 #+begin_src bash :results raw
 source config.sh
 curl --header 'api-key: ${APIKEY}'  ${URL}/test-auth
