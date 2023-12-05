@@ -190,9 +190,6 @@ If the it runs properly, a new payment cash out will be created.
 The return is the payments's data. 
 
 The *type* field specifies the recipient's payment information.
-It can be a conventional pix key (PIXKEY) or account data
-banking (ACCOUNT). In the first case (PIXKEY), the field "pixkey" becomes
-mandatory. In the second case (ACCOUNT), the field "bank_account" becomes mandatory.
 
 #+begin_src bash :results raw
   source config.sh
@@ -204,15 +201,6 @@ mandatory. In the second case (ACCOUNT), the field "bank_account" becomes mandat
       \"type\": \"PIX_KEY\"  //or BANK_ACCOUNT
       \"code\": \"123\",
       \"pixkey\": \"pixkey@example.com\",
-      \"bank_account\": {
-          \"name\": \"Fulano de souza\",
-          \"cpf_cnpj\": \"12863843893\",
-          \"bank_code\": \"001\",          
-          \"agency\": \"3333\",
-          \"account\": \"12345\",
-          \"account_digit\": \"1\",
-          \"account_type\": \"CONTA_CORRENTE\"
-      }
       \"amount\": 1000.00 
   }
   "
