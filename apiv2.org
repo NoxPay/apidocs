@@ -24,7 +24,7 @@
 #+LaTeX_HEADER: \usepackage[latin1]{inputenc}
 
 
-* Introducao 
+* Introduction 
 
 The aim of this document is show how a developer can use the Nox 
 gateway api v2 in testnet. To use this system you must generate 
@@ -274,3 +274,62 @@ echo
 #+end_src
 
 The report generated is send to merchant email in csv format.
+
+** Creating credit card payment
+
+#+begin_src bash :results raw
+source config.sh
+
+PAYCODE=`uuid`
+URLFULL="https://api2.noxpay.io/creditcard" 
+
+echo "Creating payment"
+
+payment="\
+{\
+    \"code\": \"${PAYCODE}\",\
+    \"amount\": <amount>,\
+    \"email\": \"<email>\",\
+    \"name\": \"<name>\",\
+    \"cpf_cnpj\": \"<cpf_cnpj>\",\
+    \"expired_url\": \"<expired_url>\",\
+    \"return_url\": \"<return_url>\",\
+    \"max_installments_value\": <max_installments_value>,\
+    \"soft_descriptor_light\": \"<soft_descriptor_light>\"\
+}"
+
+echo "${payment}" | curl -s --header "api-key: ${APIKEY}" \
+    --header "Content-Type: application/json" \
+    "${URLFULL}" -d @-
+
+#+end_src
+
+In the example above, the variables must be replaced by the correct values.
+
+<amount> - the amount of the payment
+<email> - the email of the customer
+<name> - the name of the customer
+<cpf_cnpj> - the cpf or cnpj of the customer
+<expired_url> - the url to redirect the customer if the payment expires
+<return_url> - the url to redirect the customer if the payment is successful
+<max_installments_value> - the maximum value of the installments
+<soft_descriptor_light> - the soft descriptor light (max 12 characters)
+
+Example of the output:
+
+#+begin_example
+{
+  "id": "3E58AFCAB87F4D1BAAB72A24C32B7F19",
+  "due_date": "2024-05-29",
+  "currency": "BRL",
+  "email": "<email>",
+  "status": "pending",
+  "total_cents": 1000,
+  "order_id": "NOX9V26YJIT6FAWCPNKGPY82XX8OCMAU",
+  "secure_id": "3e58afca-b87f-4d1b-aab7-2a24c32b7f19-4d62",
+  "secure_url": "https://faturas.iugu.com/3e58afca-b87f-4d1b-aab7-2a24c32b7f19-4d62",
+  "total": "R$ 10,00",
+  "created_at_iso": "2024-05-28T17:19:48-03:00"
+}%
+#+end_example
+
