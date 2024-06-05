@@ -306,14 +306,14 @@ echo "${payment}" | curl -s --header "api-key: ${APIKEY}" \
 
 In the example above, the variables must be replaced by the correct values.
 
-<amount> - the amount of the payment
-<email> - the email of the customer
-<name> - the name of the customer
-<cpf_cnpj> - the cpf or cnpj of the customer
-<expired_url> - the url to redirect the customer if the payment expires
-<return_url> - the url to redirect the customer if the payment is successful
-<max_installments_value> - the maximum value of the installments
-<soft_descriptor_light> - the soft descriptor light (max 12 characters)
+- <amount> - the amount of the payment
+- <email> - the email of the customer
+- <name> - the name of the customer
+- <cpf_cnpj> - the cpf or cnpj of the customer
+- <expired_url> - the url to redirect the customer if the payment expires
+- <return_url> - the url to redirect the customer if the payment is successful
+- <max_installments_value> - the maximum value of the installments
+- <soft_descriptor_light> - the soft descriptor light (max 12 characters)
 
 Example of the output:
 
