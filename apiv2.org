@@ -330,6 +330,49 @@ Example of the output:
   "secure_url": "https://faturas.iugu.com/3e58afca-b87f-4d1b-aab7-2a24c32b7f19-4d62",
   "total": "R$ 10,00",
   "created_at_iso": "2024-05-28T17:19:48-03:00"
-}%
+}
 #+end_example
 
+** Get credit card payment
+
+#+begin_src bash :results raw
+source config.sh
+
+if [ -z "$1" ]; then
+    echo "Usage: $0 <code or txid>"
+    exit 1
+fi
+
+echo "URL: ${URL}"
+echo "GAPIKEY: ${GAPIKEY}"
+
+PAYCODE=`uuid`
+URLFULL="${URL}/creditcard/${1}"
+
+echo "$URLFULL"
+echo "$PAYCODE"
+
+echo "Get Payment Credit Card ${URLFULL}"
+
+curl -s --header "api-key: ${GAPIKEY}" "${URLFULL}"
+#+end_src
+
+Example of the output:
+
+#+begin_example
+{
+    "id": 10,
+    "status": "PAID",
+    "code": "CODE123",
+    "txid": "NOX9V26YJIT6FAWCPNKGPY82XX8OCMAU",
+    "amount": 1000,
+    "created_at": "2024-05-28T17:19:48-03:00",
+    "paid_at": "2024-05-28T17:19:48-03:00",
+    "canceled_at": null,
+    "customer_name": "Customer Name",
+    "customer_email": "
+    "customer_document": "12345678901",
+    "merchant_id": 1,
+    "id_from_bank": "3e58afca-b87f-4d1b-aab7-2a24c32b7f19-4d62" 
+}
+#+end_example
