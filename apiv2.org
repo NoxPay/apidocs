@@ -343,18 +343,11 @@ if [ -z "$1" ]; then
     exit 1
 fi
 
-echo "URL: ${URL}"
-echo "GAPIKEY: ${GAPIKEY}"
+URLFULL="https://api2.noxpay.io/creditcard/${1}"
 
-PAYCODE=`uuid`
-URLFULL="${URL}/creditcard/${1}"
+echo "Get Payment Credit Card"
 
-echo "$URLFULL"
-echo "$PAYCODE"
-
-echo "Get Payment Credit Card ${URLFULL}"
-
-curl -s --header "api-key: ${GAPIKEY}" "${URLFULL}"
+curl -s --header "api-key: ${APIKEY}" "${URLFULL}"
 #+end_src
 
 Example of the output:
