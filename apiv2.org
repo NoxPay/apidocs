@@ -258,7 +258,6 @@ source config.sh
 
 URLFULL="${URL}/report/transactions" 
 
-echo "Creating payment"
 filter="\
 {\
     \"beginDate\": \"2023-09-10T00:00:00Z\",\
