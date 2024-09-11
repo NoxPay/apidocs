@@ -1,4 +1,4 @@
-#+title: API Docs
+#+title: API Docs (Deprecated)
 #+author: Vinicius Valente Maciel
 #+EMAIL:  vmaciel@nox.trading
 #+DESCRIPTION: API Gateway testing
