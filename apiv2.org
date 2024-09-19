@@ -150,13 +150,10 @@ payment="
 txid=`echo ${payment} | curl -s \
     --header 'Content-Type: application/json' \
     --header 'api-key: ${APIKEY}' \
-   ${URL}/api/payment -d @- | jq -r .txid`
+   ${URL}/payment -d @- | jq -r .txid`
 echo ${txid}
 
 curl --header 'api-key: ${APIKEY}' ${URL}/account
-echo
-curl -s --header 'api-key: ${APIKEY}' \
-   ${URL}/api/${txid}
 echo
 curl -s --header 'api-key: ${APIKEY}' \
    ${URL}/payment/${txid}
@@ -210,10 +207,10 @@ The *type* field specifies the recipient's payment information.
   txoutid=`echo ${paymentout} | curl -s \
      --header 'Content-Type: application/json' \
      --header 'api-key: 12345678' \
-     ${URL}/api/payment -d @- | jq -r .txid`
+     ${URL}/payment -d @- | jq -r .txid`
   echo ${txoutid}
 
-  curl --header 'api-key: 12345678' ${URL}/api/account
+  curl --header 'api-key: 12345678' ${URL}/account
   echo
   curl -s --header 'api-key: 12345678' ${URL}/payment/${txoutid}
   echo "========> Pagando"
