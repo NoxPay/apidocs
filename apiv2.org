@@ -126,9 +126,9 @@ Creating payment
 
 ***** Optional fields in payload JSON
 
-- webhook_url - The webhook URL that the system will use to send notifications of changes in the current payment.
-- client_name - Client name
-- client_document - Client document, can be blank or contain the client's CPF or CNPJ.
+- ~webhook_url~ - The webhook URL that the system will use to send notifications of changes in the current payment.
+- ~client_name~ - Client name
+- ~client_document~ - Client document, can be blank or contain the client's CPF or CNPJ.
 
 *** Get Payment's info
 
