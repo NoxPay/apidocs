@@ -124,7 +124,7 @@ Creating payment
  "Status":"WAITING_PAYMENT"}
 #+end_example
 
-**** Optional fields
+***** Optional fields in payload JSON
 
 - webhook_url - The webhook URL that the system will use to send notifications of changes in the current payment.
 - client_name - Client name
