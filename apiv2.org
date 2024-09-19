@@ -124,7 +124,13 @@ Creating payment
  "Status":"WAITING_PAYMENT"}
 #+end_example
 
-**** Get Payment's info
+**** Optional fields
+
+- webhook_url - The webhook URL that the system will use to send notifications of changes in the current payment.
+- client_name - Client name
+- client_document - Client document, can be blank or contain the client's CPF or CNPJ.
+
+*** Get Payment's info
 
 To get the payment's data info you must use 
 the /${URL}/payment/{code}or{txid}/, where *txid* is 
