@@ -234,7 +234,7 @@ Example of the output:
 #+end_example
 
 
-***** Optional fields in payload JSON
+***** Optional fields in PIXOUT payload JSON
 
 - ~client_name~ - Client name
 - ~client_document~ - Client document, can be blank or contain the client's CPF or CNPJ.
