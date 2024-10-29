@@ -117,9 +117,9 @@ Creating payment
 {"method":"PIX",
  "code":"123333", 
  "amount": 1005.00,
- "qrcode":"https://noxbitcoin.com.br/logo-nox.svg?id=2893746",
- "qrcodebase64":"aaaaabbbbbbb==",
- "copypaste": "<string copy paste pagamento>",
+ "URL":"https://noxbitcoin.com.br/logo-nox.svg?id=2893746",
+ "QRCode":"aaaaabbbbbbb==",
+ "QRCodeText": "<string copy paste pagamento>",
  "txid":"7132668f-9916-4bc9-9c50-89af03169e1f",
  "Status":"WAITING_PAYMENT"}
 #+end_example
