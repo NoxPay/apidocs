@@ -377,3 +377,46 @@ Example of the output:
     "id_from_bank": "3e58afca-b87f-4d1b-aab7-2a24c32b7f19-4d62" 
 }
 #+end_example
+
+** Webhook Notifications
+
+When a payment's status changes to PAID, the system will send a webhook notification to the client's specified URL (if provided). Below is an example of the JSON payload that may be sent to the client via webhook:
+
+#+begin_src json
+{
+  "id": 99999999,
+  "merchant_id": 999,
+  "method": "PIX",
+  "status": "PAID",
+  "code": "12345678",
+  "txid": "99999999999999999999999999999999",
+  "amount": 100,
+  "created_at_date": "2024-11-18T18:51:30.501559Z",
+  "receipt_name": "Customer Name",
+  "receipt_cpf_cnpj": "25951519837",
+  "pix_end2end_id": "E9999999999999999999999999999999"
+}
+#+end_src
+
+*** Webhook Signature Verification
+
+To ensure the integrity and authenticity of webhook notifications, the content is signed using a secret key defined by you. This signature allows you to verify that the webhook was indeed sent by our system and that the content has not been tampered with.
+
+The signature is generated through the following process:
+
+1. Concatenate your secret key with the webhook's plaintext content.
+2. Hash the concatenated string using the SHA-256 algorithm.
+3. Encode the resulting hash using Base64 encoding.
+4. Include the encoded signature in the X-Signature HTTP header of the webhook request.
+
+When you receive a webhook notification, you can verify its authenticity by performing the same steps:
+
+1. Retrieve the X-Signature header from the webhook request.
+2. Concatenate your secret key with the received webhook payload.
+3. Hash the concatenated string using SHA-256.
+4. Encode the hash using Base64 encoding.
+5. Compare the encoded hash with the signature provided in the X-Signature header.
+
+If the generated signature matches the one provided in the header, you can be confident that the webhook was sent by our system and that the content is trustworthy.
+
+
