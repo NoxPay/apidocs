@@ -1,5 +1,15 @@
 # Payment Link
 
+```
+## Base URL
+
+The base URL for payment link API endpoints:
+
+bash# Base URL for payment link API requests
+
+BASE_URL="https://paglink.noxpay.io"
+
+```
 ## Authentication
 
 All API requests must include an `api-key` in the request headers for authentication.
