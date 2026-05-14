@@ -24,7 +24,7 @@
 #+LaTeX_HEADER: \usepackage[latin1]{inputenc}
 
 
-* Introducao 
+* Introduction 
 
 The aim of this document is show how a developer can use the Nox 
 gateway api v2 in testnet. To use this system you must generate 
@@ -53,9 +53,10 @@ export APIKEY=<apikey> #substitua aqui sua apikey
 ** Checking APIKEY
 
 To check your APIKEY, you must run the test-auth.sh file. If the .sh 
-runs properly, the return will be your data. *This endpoint onlys 
-works in the testnet*.
+runs properly, the return will be your data.
 
+#+NAME: test-auth.sh
+#+LABEL: test-auth.sh
 #+begin_src bash :results raw
 source config.sh
 curl --header 'api-key: ${APIKEY}'  ${URL}/test-auth
@@ -117,22 +118,25 @@ Creating payment
  "code":"123333", 
  "type: "<pix type>",
  "amount": 1005.00,
- "qrcode":"aaaaabbbbbbb==",
- "qrcodetext": "<string copy paste pagamento>",
+ "URL":"https://noxbitcoin.com.br/logo-nox.svg?id=2893746",
+ "QRCode":"aaaaabbbbbbb==",
+ "QRCodeText": "<string copy paste pagamento>",
  "txid":"7132668f-9916-4bc9-9c50-89af03169e1f",
  "Status":"WAITING_PAYMENT",
  "URL":"https://api2.noxpay.io/qrcode/<txid>"}
 #+end_example
 
-**** Get Payment's info
+***** Optional fields in payload JSON
+
+- ~webhook_url~ - The webhook URL that the system will use to send notifications of changes in the current payment.
+- ~client_name~ - Client name
+- ~client_document~ - Client document, can be blank or contain the client's CPF or CNPJ.
+
+*** Get Payment's info
 
 To get the payment's data info you must use 
 the /${URL}/payment/{code}or{txid}/, where *txid* is 
 returned from the payment creation and *code* is your control about payments, you must need insert the code before to make a payment requisitions.
-
-To simulate a payment, you must use 
-the /${URL}/payment/${txid}/. 
-This feature only works in the testnet instance of the system. 
 
 #+begin_src bash :results raw
 source config.sh
@@ -148,13 +152,10 @@ payment="
 txid=`echo ${payment} | curl -s \
     --header 'Content-Type: application/json' \
     --header 'api-key: ${APIKEY}' \
-   ${URL}/api/payment -d @- | jq -r .txid`
+   ${URL}/payment -d @- | jq -r .txid`
 echo ${txid}
 
 curl --header 'api-key: ${APIKEY}' ${URL}/account
-echo
-curl -s --header 'api-key: ${APIKEY}' \
-   ${URL}/api/${txid}
 echo
 curl -s --header 'api-key: ${APIKEY}' \
    ${URL}/payment/${txid}
@@ -190,9 +191,6 @@ If the it runs properly, a new payment cash out will be created.
 The return is the payments's data. 
 
 The *type* field specifies the recipient's payment information.
-It can be a conventional pix key (PIXKEY) or account data
-banking (ACCOUNT). In the first case (PIXKEY), the field "pixkey" becomes
-mandatory. In the second case (ACCOUNT), the field "bank_account" becomes mandatory.
 
 #+begin_src bash :results raw
   source config.sh
@@ -204,15 +202,6 @@ mandatory. In the second case (ACCOUNT), the field "bank_account" becomes mandat
       \"type\": \"PIX_KEY\"  //or BANK_ACCOUNT
       \"code\": \"123\",
       \"pixkey\": \"pixkey@example.com\",
-      \"bank_account\": {
-          \"name\": \"Fulano de souza\",
-          \"cpf_cnpj\": \"12863843893\",
-          \"bank_code\": \"001\",          
-          \"agency\": \"3333\",
-          \"account\": \"12345\",
-          \"account_digit\": \"1\",
-          \"account_type\": \"CONTA_CORRENTE\"
-      }
       \"amount\": 1000.00 
   }
   "
@@ -220,10 +209,10 @@ mandatory. In the second case (ACCOUNT), the field "bank_account" becomes mandat
   txoutid=`echo ${paymentout} | curl -s \
      --header 'Content-Type: application/json' \
      --header 'api-key: 12345678' \
-     ${URL}/api/payment -d @- | jq -r .txid`
+     ${URL}/payment -d @- | jq -r .txid`
   echo ${txoutid}
 
-  curl --header 'api-key: 12345678' ${URL}/api/account
+  curl --header 'api-key: 12345678' ${URL}/account
   echo
   curl -s --header 'api-key: 12345678' ${URL}/payment/${txoutid}
   echo "========> Pagando"
@@ -247,6 +236,12 @@ Example of the output:
 #+end_example
 
 
+***** Optional fields in PIXOUT payload JSON
+
+- ~client_name~ - Client name
+- ~client_document~ - Client document, can be blank or contain the client's CPF or CNPJ.
+
+
 **** Resend webhook
 
 To resend a webhook, you must run the code.
@@ -266,34 +261,45 @@ https://api2.noxpay.io/qrcode/<txid>
 
 Where txid is returned from the payment creation.
 
-*** Reports
+** Webhook Notifications
 
-**** Transactions
+When a payment's status changes to PAID, the system will send a webhook notification to the client's specified URL (if provided). Below is an example of the JSON payload that may be sent to the client via webhook:
 
-List the transactions using an filter. It's possible filter:
-- endDate - in RFC339 format;
-- beginDate - in RFC339 format;
-- status - WAITING_PAYMENT, PAID, SENDING, SENT, APROVED, NO_FUND, WRONG_PIXKEY, REJECTED, FAIL
-- method - PIX or PIXOUT
-
-#+begin_src bash :results raw
-source config.sh
-
-URLFULL="${URL}/report/transactions" 
-
-echo "Creating payment"
-filter="\
-{\
-    \"beginDate\": \"2023-09-10T00:00:00Z\",\
-    \"endDate\": \"2023-10-10T00:00:00Z\",\
-    \"method\": \"PIX\",\
-    \"status\": \"PAID\"
-}"
-
-echo "${filter}" | curl --header "api-key: 12345678" \
-    --header "Content-Type: application/json" \
-    "${URLFULL}" -d @-
-echo
+#+begin_src json
+{
+  "id": 99999999,
+  "merchant_id": 999,
+  "method": "PIX",
+  "status": "PAID",
+  "code": "12345678",
+  "txid": "99999999999999999999999999999999",
+  "amount": 100,
+  "created_at_date": "2024-11-18T18:51:30.501559Z",
+  "receipt_name": "Customer Name",
+  "receipt_cpf_cnpj": "25951519837",
+  "pix_end2end_id": "E9999999999999999999999999999999"
+}
 #+end_src
 
-The report generated is send to merchant email in csv format.
+*** Webhook Signature Verification
+
+To ensure the integrity and authenticity of webhook notifications, the content is signed using a secret key defined by you. This signature allows you to verify that the webhook was indeed sent by our system and that the content has not been tampered with.
+
+The signature is generated through the following process:
+
+1. Concatenate your secret key with the webhook's plaintext content.
+2. Hash the concatenated string using the SHA-256 algorithm.
+3. Encode the resulting hash using Base64 encoding.
+4. Include the encoded signature in the X-Signature HTTP header of the webhook request.
+
+When you receive a webhook notification, you can verify its authenticity by performing the same steps:
+
+1. Retrieve the X-Signature header from the webhook request.
+2. Concatenate your secret key with the received webhook payload.
+3. Hash the concatenated string using SHA-256.
+4. Encode the hash using Base64 encoding.
+5. Compare the encoded hash with the signature provided in the X-Signature header.
+
+If the generated signature matches the one provided in the header, you can be confident that the webhook was sent by our system and that the content is trustworthy.
+
+

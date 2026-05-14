@@ -1,0 +1,354 @@
+{
+    "_type": "export",
+    "__export_format": 4,
+    "__export_date": "2024-02-01T12:43:39.136Z",
+    "__export_source": "insomnia.desktop.app:v2023.5.8",
+    "resources": [
+        {
+            "_id": "req_429d7a3afb1547ccb49196a31429cc20",
+            "parentId": "fld_cdeee9bcbbdd42c9bd8caed611715ea3",
+            "modified": 1706790998736,
+            "created": 1706714743817,
+            "url": "{{ _.URL }}/test-auth",
+            "name": "Test-auth",
+            "description": "",
+            "method": "GET",
+            "body": {},
+            "parameters": [],
+            "headers": [
+                {
+                    "name": "User-Agent",
+                    "value": "insomnia/2023.5.8",
+                    "id": "pair_1d685d3987764fac8f8a07e462999cd0"
+                },
+                {
+                    "id": "pair_964f4ca26560498983bfd51b768c8db6",
+                    "name": "api-key",
+                    "value": "{{ _.ApiKey }}",
+                    "description": "",
+                    "disabled": false
+                },
+                {
+                    "id": "pair_24cf064055c34eb897adf4baba4952c8",
+                    "name": "Content-Type",
+                    "value": "application/json",
+                    "description": ""
+                }
+            ],
+            "authentication": {},
+            "metaSortKey": -1706714743817,
+            "isPrivate": false,
+            "settingStoreCookies": true,
+            "settingSendCookies": true,
+            "settingDisableRenderRequestBody": false,
+            "settingEncodeUrl": true,
+            "settingRebuildPath": true,
+            "settingFollowRedirects": "global",
+            "_type": "request"
+        },
+        {
+            "_id": "fld_cdeee9bcbbdd42c9bd8caed611715ea3",
+            "parentId": "wrk_3331ee3045134c008d54402190d5cbb6",
+            "modified": 1706714725030,
+            "created": 1706714653035,
+            "name": "NOXPAY",
+            "description": "",
+            "environment": {},
+            "environmentPropertyOrder": null,
+            "metaSortKey": -1676238950522,
+            "_type": "request_group"
+        },
+        {
+            "_id": "wrk_3331ee3045134c008d54402190d5cbb6",
+            "parentId": null,
+            "modified": 1706790786069,
+            "created": 1706790734420,
+            "name": "NoxPay",
+            "description": "",
+            "scope": "collection",
+            "_type": "workspace"
+        },
+        {
+            "_id": "req_bf6d19ac398743c2ab5efef7b109b323",
+            "parentId": "fld_cdeee9bcbbdd42c9bd8caed611715ea3",
+            "modified": 1706791004949,
+            "created": 1706716765105,
+            "url": "{{ _.URL }}/account",
+            "name": "Account",
+            "description": "",
+            "method": "GET",
+            "body": {},
+            "parameters": [],
+            "headers": [
+                {
+                    "name": "User-Agent",
+                    "value": "insomnia/2023.5.8",
+                    "id": "pair_1d685d3987764fac8f8a07e462999cd0"
+                },
+                {
+                    "id": "pair_964f4ca26560498983bfd51b768c8db6",
+                    "name": "api-key",
+                    "value": "{{ _.ApiKey }}",
+                    "description": "",
+                    "disabled": false
+                },
+                {
+                    "id": "pair_24cf064055c34eb897adf4baba4952c8",
+                    "name": "Content-Type",
+                    "value": "application/json",
+                    "description": ""
+                }
+            ],
+            "authentication": {},
+            "metaSortKey": -1706644868981.5,
+            "isPrivate": false,
+            "settingStoreCookies": true,
+            "settingSendCookies": true,
+            "settingDisableRenderRequestBody": false,
+            "settingEncodeUrl": true,
+            "settingRebuildPath": true,
+            "settingFollowRedirects": "global",
+            "_type": "request"
+        },
+        {
+            "_id": "req_499712d5dff14a33a8144b32ad6cccb8",
+            "parentId": "fld_cdeee9bcbbdd42c9bd8caed611715ea3",
+            "modified": 1706791085331,
+            "created": 1706717177216,
+            "url": "{{ _.URL }}/payment/{txid}",
+            "name": "Payment/{code || txid}",
+            "description": "",
+            "method": "GET",
+            "body": {},
+            "parameters": [],
+            "headers": [
+                {
+                    "name": "User-Agent",
+                    "value": "insomnia/2023.5.8",
+                    "id": "pair_1d685d3987764fac8f8a07e462999cd0"
+                },
+                {
+                    "id": "pair_964f4ca26560498983bfd51b768c8db6",
+                    "name": "api-key",
+                    "value": "{{ _.ApiKey }}",
+                    "description": "",
+                    "disabled": false
+                },
+                {
+                    "id": "pair_24cf064055c34eb897adf4baba4952c8",
+                    "name": "Content-Type",
+                    "value": "application/json",
+                    "description": ""
+                }
+            ],
+            "authentication": {},
+            "metaSortKey": -1706627400272.625,
+            "isPrivate": false,
+            "settingStoreCookies": true,
+            "settingSendCookies": true,
+            "settingDisableRenderRequestBody": false,
+            "settingEncodeUrl": true,
+            "settingRebuildPath": true,
+            "settingFollowRedirects": "global",
+            "_type": "request"
+        },
+        {
+            "_id": "req_83f36f05c8d94eaa8b9a10dee9058d4c",
+            "parentId": "fld_cdeee9bcbbdd42c9bd8caed611715ea3",
+            "modified": 1706791017628,
+            "created": 1706716832043,
+            "url": "{{ _.URL }}/payment",
+            "name": "Payment - Cash In",
+            "description": "",
+            "method": "POST",
+            "body": {
+                "mimeType": "application/json",
+                "text": "{\n    \"method\": \"PIX\",\n    \"code\": \"T2-3X*X'@!\",\n    \"amount\": 1.06\n}"
+            },
+            "parameters": [],
+            "headers": [
+                {
+                    "name": "Content-Type",
+                    "value": "application/json",
+                    "id": "pair_f2354f2ba2934487968f5680d6ea3836"
+                },
+                {
+                    "name": "User-Agent",
+                    "value": "insomnia/2023.5.8",
+                    "id": "pair_1d685d3987764fac8f8a07e462999cd0"
+                },
+                {
+                    "id": "pair_964f4ca26560498983bfd51b768c8db6",
+                    "name": "api-key",
+                    "value": "{{ _.ApiKey }}",
+                    "description": "",
+                    "disabled": false
+                }
+            ],
+            "authentication": {},
+            "metaSortKey": -1706609931563.75,
+            "isPrivate": false,
+            "settingStoreCookies": true,
+            "settingSendCookies": true,
+            "settingDisableRenderRequestBody": false,
+            "settingEncodeUrl": true,
+            "settingRebuildPath": true,
+            "settingFollowRedirects": "global",
+            "_type": "request"
+        },
+        {
+            "_id": "req_101a7bd0392f48428c61fef2b17b9009",
+            "parentId": "fld_cdeee9bcbbdd42c9bd8caed611715ea3",
+            "modified": 1706791024144,
+            "created": 1706720564968,
+            "url": "{{ _.URL }}/payment",
+            "name": "Payment - Cash Out",
+            "description": "",
+            "method": "POST",
+            "body": {
+                "mimeType": "application/json",
+                "text": "{\n    \"method\": \"PIXOUT\",\n    \"type\": \"PIX_KEY\",\n    \"code\": \"123\",\n    \"pixkey\": \"teste@teste.com.br\",\n    \"amount\": 1.08\n}"
+            },
+            "parameters": [],
+            "headers": [
+                {
+                    "name": "Content-Type",
+                    "value": "application/json",
+                    "id": "pair_ef67514f93274170a636effc685511de"
+                },
+                {
+                    "name": "User-Agent",
+                    "value": "insomnia/2023.5.8",
+                    "id": "pair_1d685d3987764fac8f8a07e462999cd0"
+                },
+                {
+                    "id": "pair_964f4ca26560498983bfd51b768c8db6",
+                    "name": "api-key",
+                    "value": "{{ _.ApiKey }}",
+                    "description": "",
+                    "disabled": false
+                }
+            ],
+            "authentication": {},
+            "metaSortKey": -1706609931513.75,
+            "isPrivate": false,
+            "settingStoreCookies": true,
+            "settingSendCookies": true,
+            "settingDisableRenderRequestBody": false,
+            "settingEncodeUrl": true,
+            "settingRebuildPath": true,
+            "settingFollowRedirects": "global",
+            "_type": "request"
+        },
+        {
+            "_id": "req_db3231c9053242e78b41b45e7b75e5fc",
+            "parentId": "fld_cdeee9bcbbdd42c9bd8caed611715ea3",
+            "modified": 1706791076013,
+            "created": 1706720413771,
+            "url": "{{ _.URL }}/payment/webhook/resend/{txid}",
+            "name": "Resend Webhook",
+            "description": "",
+            "method": "GET",
+            "body": {},
+            "parameters": [],
+            "headers": [
+                {
+                    "name": "User-Agent",
+                    "value": "insomnia/2023.5.8",
+                    "id": "pair_1d685d3987764fac8f8a07e462999cd0"
+                },
+                {
+                    "id": "pair_964f4ca26560498983bfd51b768c8db6",
+                    "name": "api-key",
+                    "value": "{{ _.ApiKey }}",
+                    "description": "",
+                    "disabled": false
+                }
+            ],
+            "authentication": {},
+            "metaSortKey": -1706601197134.3125,
+            "isPrivate": false,
+            "settingStoreCookies": true,
+            "settingSendCookies": true,
+            "settingDisableRenderRequestBody": false,
+            "settingEncodeUrl": true,
+            "settingRebuildPath": true,
+            "settingFollowRedirects": "global",
+            "_type": "request"
+        },
+        {
+            "_id": "req_fd07c00c1c744d52acb54eb964ef0f3f",
+            "parentId": "fld_cdeee9bcbbdd42c9bd8caed611715ea3",
+            "modified": 1706791036760,
+            "created": 1706720302981,
+            "url": "{{ _.URL }}/report/transactions",
+            "name": "Report/Transactions",
+            "description": "",
+            "method": "POST",
+            "body": {
+                "mimeType": "application/json",
+                "text": "{\n    \"beginDate\": \"2023-09-10T00:00:00Z\",\n    \"endDate\": \"2024-10-10T00:00:00Z\",\n    \"method\": \"PIX\",\n    \"status\": \"PAID\"\n}"
+            },
+            "parameters": [],
+            "headers": [
+                {
+                    "name": "Content-Type",
+                    "value": "application/json",
+                    "id": "pair_9172c93244b24904979ffa671e2e83ab"
+                },
+                {
+                    "name": "User-Agent",
+                    "value": "insomnia/2023.5.8",
+                    "id": "pair_1d685d3987764fac8f8a07e462999cd0"
+                },
+                {
+                    "id": "pair_964f4ca26560498983bfd51b768c8db6",
+                    "name": "api-key",
+                    "value": "{{ _.ApiKey }}",
+                    "description": "",
+                    "disabled": false
+                }
+            ],
+            "authentication": {},
+            "metaSortKey": -1706592462804.875,
+            "isPrivate": false,
+            "settingStoreCookies": true,
+            "settingSendCookies": true,
+            "settingDisableRenderRequestBody": false,
+            "settingEncodeUrl": true,
+            "settingRebuildPath": true,
+            "settingFollowRedirects": "global",
+            "_type": "request"
+        },
+        {
+            "_id": "env_a0cf63ac9cfc4819b0b82ef4bfe9d7c5",
+            "parentId": "wrk_3331ee3045134c008d54402190d5cbb6",
+            "modified": 1706790990382,
+            "created": 1676414943022,
+            "name": "Base Environment",
+            "data": {
+                "URL": "https://api2.noxpay.io",
+                "ApiKey": ""
+            },
+            "dataPropertyOrder": {
+                "&": [
+                    "URL",
+                    "ApiKey"
+                ]
+            },
+            "color": null,
+            "isPrivate": false,
+            "metaSortKey": 1676414943022,
+            "_type": "environment"
+        },
+        {
+            "_id": "jar_20582c777cea4e5d891b70d66ac895f0",
+            "parentId": "wrk_3331ee3045134c008d54402190d5cbb6",
+            "modified": 1695843028146,
+            "created": 1676414943024,
+            "name": "Default Jar",
+            "cookies": [],
+            "_type": "cookie_jar"
+        }
+    ]
+}
